@@ -23,8 +23,12 @@ func main() {
     sql_db       := os.Getenv("SQL_DATABASE")
 
     // MySQL/MariaDB
-    connection := fmt.Sprintf("%s:%s@%s/%s", sql_user, sql_pass, sql_location, sql_db)
-    db, err := sql.Open("mysql", connection)
+    // connection := fmt.Sprintf("%s:%s@%s/%s", sql_user, sql_pass, sql_location, sql_db)
+    // db, err := sql.Open("mysql", connection)
+
+    // Microsoft SQL Server
+    connection := fmt.Sprintf("odbc:server=%s;user id=%s;password=%s;database=%s;TrustServerCertificate=true;encrypt=disable;ApplicationIntent=readonly", sql_location, sql_user, sql_pass, sql_db)
+    db, err := sql.Open("mssql", connection)
 
     if err != nil {
         panic(err.Error())
