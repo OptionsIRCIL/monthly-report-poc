@@ -4,12 +4,14 @@ import (
     "database/sql"
     "fmt"
     _ "github.com/go-sql-driver/mysql"
+    _ "github.com/denisenkom/go-mssqldb"
 )
 
 func main() {
 
-    // Connect to MySQL/MariaDB Database
-    db, err := sql.Open("mysql", "root:example@tcp(localhost:3306)/ILCWorkGroups")
+    // Connect to  Database
+    db, err := sql.Open("mysql", "root:example@tcp(localhost:3306)/ILCWorkGroups") // MySQL/MariaDB
+
     if err != nil {
         panic(err.Error())
     } else {
