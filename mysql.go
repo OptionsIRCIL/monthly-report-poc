@@ -1,4 +1,4 @@
-//go:build mysql || mariadb
+//go:build my || mysql || mariadb
 
 package main
 

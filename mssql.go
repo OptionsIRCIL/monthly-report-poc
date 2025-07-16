@@ -1,4 +1,4 @@
-//go:build mssql || ms || microsoft
+//go:build ms || mssql || microsoft
 
 package main
 

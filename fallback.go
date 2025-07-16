@@ -1,4 +1,4 @@
-//go:build !mssql && !mysql && !mariadb && !ms && !microsoft
+//go:build !ms && !mssql && !microsoft && !my && !mysql && !mariadb 
 
 package main
 
@@ -9,7 +9,7 @@ import (
 )
 
 func SQLOpen() (*sql.DB, error) {
-    log.Fatal("No database chosen. Recompile this program with `-tags {mssql,mysql,mariadb}`")
+    log.Fatal("No database chosen. Recompile this program with `-tags {ms,mssql,microsoft,my,mysql,mariadb}`")
     return nil, errors.New("No database chosen.")
 }
 
