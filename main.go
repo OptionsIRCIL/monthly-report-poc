@@ -10,8 +10,7 @@ import (
     _ "github.com/denisenkom/go-mssqldb"
 )
 
-func main() {
-
+func SQLOpen() (*sql.DB, error) {
     err := godotenv.Load()
     if err != nil {
 	    log.Fatal("Error loading .env file")
@@ -28,12 +27,12 @@ func main() {
 
     // Microsoft SQL Server
     connection := fmt.Sprintf("odbc:server=%s;user id=%s;password=%s;database=%s;TrustServerCertificate=true;encrypt=disable;ApplicationIntent=readonly", sql_location, sql_user, sql_pass, sql_db)
-    db, err := sql.Open("mssql", connection)
 
-    if err != nil {
-        panic(err.Error())
-    }
-    defer db.Close()
+    db, err := sql.Open("mssql", connection)
+    return db, err
+}
+
+func queryDb(db *sql.DB) {
 
 	// List employees
     employees, err := db.Query("SELECT FirstName, LastName FROM DBA_t_Employees")
@@ -52,5 +51,16 @@ func main() {
         }
         fmt.Println(firstName.String, lastName.String)
     }
+}
+
+func main() {
+
+	db, err := SQLOpen()
+	if err != nil {
+		panic(err.Error())
+	}
+    defer db.Close()
+
+    queryDb(db)
 
 }
