@@ -32,8 +32,6 @@ func main() {
 
     if err != nil {
         panic(err.Error())
-    } else {
-        fmt.Println("Successful connection")
     }
     defer db.Close()
 
