@@ -36,5 +36,6 @@ func main() {
 	}
     defer db.Close()
 
-    queryDb(db)
+    // queryDb(db)
+    createReport()
 }
