@@ -1,4 +1,4 @@
-//go:build !mssql && !mysql && !mariadb
+//go:build !mssql && !mysql && !mariadb && !ms && !microsoft
 
 package main
 
