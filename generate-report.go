@@ -6,11 +6,13 @@ import (
     "time"
     "os"
 
+    "github.com/joho/godotenv"
+
     "github.com/johnfercher/maroto/v2"
     
     // "github.com/johnfercher/maroto/v2/pkg/components/code"
     "github.com/johnfercher/maroto/v2/pkg/components/col"
-    // "github.com/johnfercher/maroto/v2/pkg/components/image"
+    "github.com/johnfercher/maroto/v2/pkg/components/image"
     "github.com/johnfercher/maroto/v2/pkg/components/row"
     "github.com/johnfercher/maroto/v2/pkg/components/text"
     "github.com/johnfercher/maroto/v2/pkg/consts/align"
@@ -29,10 +31,12 @@ func createReport() {
     timestamp := t.Format("2006-01")
     reportLocation := "./reports/caseload-" + timestamp + ".pdf"
 
-    err := os.Mkdir("./reports")
+    /*
+    err := os.Mkdir("./reports", os.ModePerm)
     if err != nil {
         log.Fatal(err.Error())
     }
+    */
     
     document, err := m.Generate()
     if err != nil {
@@ -59,6 +63,21 @@ func GetMaroto() core.Maroto {
         Build()
 
     caseloadReport := maroto.New(cfg)
+
+    err := caseloadReport.RegisterHeader(getHeader())
+    if err != nil {
+        log.Fatal(err.Error())
+    }
+
+    t := time.Now()
+    title := "Case Load Report: " + t.Format("Jan 2006")
+
+    caseloadReport.AddRows(text.NewRow(10, title, props.Text{
+        Size:  14,
+        Top:   3,
+        Style: fontstyle.Bold,
+        Align: align.Center,
+    }))
 
     caseloadReport.AddRows(buildTable()...)
 
@@ -105,11 +124,77 @@ func getContents() [][]string {
     }
 }
 
+func getHeader() core.Row {
+    err := godotenv.Load()
+    if err != nil {
+	    log.Fatal("Error loading .env file")
+    }
+
+
+    business_address := os.Getenv("BUSINESS_ADDRESS")
+    business_name    := os.Getenv("BUSINESS_NAME")
+    business_number  := os.Getenv("BUSINESS_NUMBER")
+    business_logo    := os.Getenv("BUSINESS_LOGO")
+    business_website := os.Getenv("BUSINESS_WEBSITE")
+
+    header := row.New(30).Add(
+        image.NewFromFileCol(3, business_logo, props.Rect{
+            Center:  true,
+        }),
+        col.New(6),
+        col.New(3).Add(
+            text.New(business_name, props.Text{
+                Size:  8,
+                Align: align.Right,
+                Color: getRedColor(),
+            }),
+            text.New(business_address, props.Text{
+                Top:   3,
+                Size:  8,
+                Align: align.Right,
+                Color: getRedColor(),
+            }),
+            text.New(business_number, props.Text{
+                Top:   12,
+                Style: fontstyle.BoldItalic,
+                Size:  8,
+                Align: align.Right,
+                Color: getBlueColor(),
+            }),
+            text.New(business_website, props.Text{
+                Top:   15,
+                Style: fontstyle.BoldItalic,
+                Size:  8,
+                Align: align.Right,
+                Color: getBlueColor(),
+            }),
+        ),
+    )
+    
+    return header
+}
+
 func getGrayColor() *props.Color {
     return &props.Color{
         Red:   200,
         Green: 200,
         Blue:  200,
+    }
+}
+
+func getBlueColor() *props.Color {
+    return &props.Color{
+        Red:   10,
+        Green: 10,
+        Blue:  150,
+    }
+}
+
+func getRedColor() *props.Color {
+    return &props.Color{
+        Red:   150,
+        Green: 10,
+        Blue:  10,
     }
 }
 
