@@ -4,6 +4,7 @@ import (
     "fmt"
     "log"
     "time"
+    "os"
 
     "github.com/johnfercher/maroto/v2"
     
@@ -26,8 +27,13 @@ func createReport() {
     t := time.Now()
     m := GetMaroto()
     timestamp := t.Format("2006-01")
-    reportLocation := "reports/caseload-" + timestamp + ".pdf"
+    reportLocation := "./reports/caseload-" + timestamp + ".pdf"
 
+    err := os.Mkdir("./reports")
+    if err != nil {
+        log.Fatal(err.Error())
+    }
+    
     document, err := m.Generate()
     if err != nil {
         log.Fatal(err.Error())
