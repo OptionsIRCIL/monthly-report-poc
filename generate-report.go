@@ -71,7 +71,7 @@ func buildTable() []core.Row {
     }
 
     var contentsRow []core.Row
-    contents := getContents()
+    contents := queryDb()
 
     for i, content := range contents {
         r := row.New(4).Add(
@@ -92,15 +92,6 @@ func buildTable() []core.Row {
     return rows
 }
 
-func getGrayColor() *props.Color {
-    return &props.Color{
-        Red:   200,
-        Green: 200,
-        Blue:  200,
-    }
-}
-
-
 func getContents() [][]string {
     return [][]string{
         {"FirstName", "LastName"},
@@ -108,8 +99,11 @@ func getContents() [][]string {
     }
 }
 
-type Employee struct {
-    FirstName string
-    LastName string
+func getGrayColor() *props.Color {
+    return &props.Color{
+        Red:   200,
+        Green: 200,
+        Blue:  200,
+    }
 }
 
