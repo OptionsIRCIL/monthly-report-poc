@@ -1,10 +1,11 @@
 package main
 
 import (
+    "errors"
     "fmt"
     "log"
-    "time"
     "os"
+    "time"
 
     "github.com/joho/godotenv"
 
@@ -25,18 +26,22 @@ import (
     "github.com/johnfercher/maroto/v2/pkg/props"
 )
 
+func mkdirp(path string) {
+	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+		err := os.Mkdir(path, os.ModePerm)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+}
+
 func createReport() {
     t := time.Now()
     m := GetMaroto()
     timestamp := t.Format("2006-01")
     reportLocation := "./reports/caseload-" + timestamp + ".pdf"
 
-    /*
-    err := os.Mkdir("./reports", os.ModePerm)
-    if err != nil {
-        log.Fatal(err.Error())
-    }
-    */
+    mkdirp("./reports")
     
     document, err := m.Generate()
     if err != nil {
