@@ -7,7 +7,8 @@
 - License: BSD-3-Clause
 
 Usage:
-- Project Dependency
+- Programming Language
+- Code Formatting (gofmt)
 - `pre-commit` (from branch `release-branch.go1.1`)
 - `LICENSE`
 
